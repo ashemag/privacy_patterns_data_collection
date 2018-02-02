@@ -42,7 +42,7 @@ class CreateMyModelView(FormView):
 	template_name = 'data_search_info.html'
 	form_class = FilterForm
 	fields = ['filter_options']
-	#populate_database()  #should only be called once to populate django db 
+	populate_database()  #should only be called once to populate django db 
 	
 class AboutUs(TemplateView): 
 	template_name = 'about_us.html'
