@@ -28,6 +28,7 @@ def populate_database():
 		new_entry = DataEntry(case_name = entry[0], case_url = entry[1], last_updated=entry[2], tags=entry[3], jurisdiction = entry[4], location=entry[5], company_type=entry[6], company_type_key=entry[7], specific_violation=entry[8])
 		new_entry.id = i + 1 
 		new_entry.save() 
+	print("completed data adding")
 	exit()
 
 class DataVisView(TemplateView):
