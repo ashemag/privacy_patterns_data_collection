@@ -38,7 +38,6 @@ STATICFILES_DIRS = (
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -97,7 +96,7 @@ DATABASES = {
 
 #heroku 
 DEBUG = False
-ALLOWED_HOSTS =  ['https://privacy-patterns.herokuapp.com/', '.yourdomain.com']
+ALLOWED_HOSTS =  ['privacy-patterns.herokuapp.com', '.yourdomain.com']
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
