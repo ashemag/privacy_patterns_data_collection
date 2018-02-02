@@ -38,9 +38,9 @@ STATICFILES_DIRS = (
 SECRET_KEY = 'jwy0*8$a4@=2$x!z&j)!b2=qa21v-y=2!u5ndd4u5be$j4#=x)'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['privacy-patterns.herokuapp.com', '.yourdomain.com']
+ALLOWED_HOSTS = ['privacy-patterns.herokuapp.com', '.herokuapp.com']
 
 # Application definition
 

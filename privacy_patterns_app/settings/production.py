@@ -96,7 +96,7 @@ DATABASES = {
 
 #heroku 
 DEBUG = False
-ALLOWED_HOSTS =  ['privacy-patterns.herokuapp.com', '.yourdomain.com']
+ALLOWED_HOSTS =  ['privacy-patterns.herokuapp.com', '.herokuapp.com']
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
