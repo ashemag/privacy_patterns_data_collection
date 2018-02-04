@@ -44,7 +44,7 @@ img{
 }
 
 .bg {
-	background-image: url("https://upload.wikimedia.org/wikipedia/commons/d/d0/Background-clouds.jpg");
+	background-image: url('../images/acropolis.jpg');
 	height: 100vh;
 	background-position: center;
 	background-repeat: no-repeat;
