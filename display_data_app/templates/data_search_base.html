@@ -1,13 +1,18 @@
 {% extends "base.html" %}
 {% block content %}
+{% load static %}
+
 <div> 
 	<nav class="navbar navbar-toggleable-md navbar-light bg-faded mynav datanav" role="navigation" id="navbar">
 		<div class="container">
-			<a class="navbar-brand mynav" href="{% url 'home' %}">Privacy Patterns</a>
-			
+			<a class="navbar-brand mynav" href="{% url 'home' %}">
+				<img src="{% static 'images/logo.svg' %}" class="logo" height="100px"/>
+			</a>
+
 			<ul class="nav navbar-nav  ml-auto">
 			  	<li class="nav-item active">
-					<a class="nav-link" href="{% url 'data_search' %}">Search<span class="sr-only">(current)</span></a>
+					<a class="nav-link" href="{% url 'data_search' %}">Search<span class="sr-only">(current)</span>
+					</a>
 				</li>
 			</ul>
 
@@ -24,4 +29,12 @@
 		{% endblock %}
 	<div> 
 </div>
+</div>
+
+<div class="navbar navbar-default navbar-fixed-bottom">
+	<div class="footer">
+			<span class="muted">  © 2018 Stanford Digital Civil Society Lab </span>
+	</div>
+</div>
+
 {% endblock %}

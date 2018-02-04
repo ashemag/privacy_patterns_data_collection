@@ -1,14 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
+{% load static %}
+
 <div class="bg home">
 	<nav class="navbar navbar-toggleable-md navbar-light bg-faded mynav" role="navigation" id="navbar">
 		<div class="container">
-			<a class="navbar-brand mynav" href="{% url 'home' %}">Privacy Patterns</a>
-			<ul class="nav navbar-nav navbar-right">
-			  	<li class="nav-item active">
-					<a class="nav-link" href="{% url 'about_us' %}">About Us<span class="sr-only">(current)</span></a>
-				</li>
-			</ul>
+			<a class="navbar-brand mynav" href="{% url 'home' %}">
+				<img src="{% static 'images/logo.svg' %}" class="logo" height="100px"/>
+			</a>
 		</div>
 	</nav>
 	<div class="jumbotron jumbotron_index"> 
