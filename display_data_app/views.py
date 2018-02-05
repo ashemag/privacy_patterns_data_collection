@@ -39,11 +39,37 @@ class DataVisView(TemplateView):
 		context={'data': DataEntry.objects.filter(company_type_key = value), 'title': value}
 		return super(TemplateView, self).render_to_response(context)
 
-class CreateMyModelView(FormView):
-	template_name = 'data_search_info.html'
-	form_class = FilterForm
-	fields = ['filter_options']
-	#populate_database()  #should only be called once to populate django db 
+def form1(request): 
+	return render(request, 'data_search_form_1.html')
+
+def form2(request): 
+	print(request.POST.getlist('hey')) 
+	return render(request, 'data_search_form_2.html')
+
+def form3(request): 
+	print(request.POST.getlist('hey')) 
+	return render(request, 'data_search_form_3.html')
+
+def form4(request): 
+	print(request.POST.getlist('hey')) 
+	return render(request, 'data_search_form_4.html')
+
+
+def faq(request): 
+	return render(request, 'faq.html')
+
+def glossary(request): 
+	return render(request, 'glossary.html')
+
+
+def data_search_info(request): 
+	return render(request, 'data_search_info.html')
+
+# class CreateMyModelView(FormView):
+# 	template_name = 'data_search_info.html'
+# 	form_class = FilterForm
+# 	fields = ['filter_options']
+# 	#populate_database()  #should only be called once to populate django db 
 	
 class AboutUs(TemplateView): 
 	template_name = 'about_us.html'

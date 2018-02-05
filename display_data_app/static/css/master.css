@@ -23,10 +23,19 @@ body, html {
 	box-shadow: 0 1px 2px 0 rgba(34,36,38,.15);
 }
 
+.progress-bar {
+	background-color:#8c1515 !important;
+}
+
 .card-footer{
 	position:absolute;
  	bottom:0;
 	width:100%;
+}
+
+.card-container {
+	margin-left: 100px;
+	margin-right:100px;
 }
 
 .databody {
@@ -40,7 +49,7 @@ body, html {
 }
 
 .bg {
-	background-image: url("../images/acropolis.jpg");
+	background-image: url("../images/dish.jpg");
 	height: 100vh;
 	background-position: center;
 	background-repeat: no-repeat;
@@ -67,6 +76,6 @@ body, html {
     text-align: center !important; 
 }
 
-.data-search-card {
-	width: 50%;
+.btn:hover{
+	background-color: #8c1515;
 }
