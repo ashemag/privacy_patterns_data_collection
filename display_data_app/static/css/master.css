@@ -11,23 +11,30 @@ table {
     table-layout: fixed;
 }
 
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
 th,td, tr {
 	max-width: 50px !important; 
     word-wrap: break-word;
 	white-space:pre-line;
 }
 
-body, html {
-	height: 100vh;
-	margin: 0;
-	position: relative;
+.container {
+	overflow: auto;
 }
+
+body {
+	 height:100vh !important;
+	 margin:0px;
+	 padding:0px;
+}
+
 .checkbox {
 	column-count:2; 
 	column-gap: 20px;
-}
-.home {
-	background-color: grey;
 }
 
 .datanav {
@@ -48,6 +55,7 @@ body, html {
 
 .databody {
 	padding-top:50px;
+	padding-bottom:50px;
 	text-align: center;
 }
 
@@ -64,6 +72,13 @@ body, html {
 	background-size: cover;
 	z-index: 1;
 }
+.arrow {
+	background-image: url("../images/arrow.png");
+	height:100px;
+	width:100px;
+	z-index: -1;
+	position:  absolute;
+}
 
 .btn {
 	border-color: black; 
@@ -78,12 +93,19 @@ body, html {
 	background-color: transparent;
 }
 
+.home {
+	height:100vh;
+}
+
 .footer{
-   	padding-top:40px;
-    width:100%;
+	clear:both;
+	width:100%;
+	bottom:0px;
+	position: relative; 
     text-align: center !important; 
 }
 
 .btn:hover{
 	background-color: #8c1515;
 }
+

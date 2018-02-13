@@ -2,7 +2,8 @@
 {% block content %}
 {% load static %}
 
-<div class="bg home">
+
+<div class="bg home" style="height:100%, width:100%, position:absolute, z-index:1;">
 	<nav class="navbar navbar-toggleable-md navbar-light bg-faded mynav" role="navigation" id="navbar">
 		<div class="container">
 			<a class="navbar-brand mynav" href="{% url 'home' %}">
@@ -11,11 +12,29 @@
 		</div>
 	</nav>
 	<div class="jumbotron jumbotron_index"> 
-		<h1> What can your nonprofit do </h1>
-		<h1> to protect digital privacy? </h1>
-		<h3> Search FTC Cases By Privacy Violations </h3>
-		<a class="btn btn-outline-secondary js-scroll-trigger btn-lg" href="{% url 'data_search'%}">Get Started</a>
-	<div> 
+		<h1> Thinking about privacy,</h1>
+		<h1> but don’t know where to start? <h1>
+		<br/> 
+		<h3> We can help. </h3>
+	</div>
 </div>
 
+
+<div class="home container" style="padding-top:100px"> 
+	<br/> 
+	<div class="jumbotron"> 
+		<p> 
+			Nonprofits, like companies and governments, have always collected, used, and shared information. In today’s world, this information is digital in form, which presents unique challenges to protecting informational privacy. Nonprofits in America, however, are largely unregulated in the management of their information – whether it be information about their employees, their donors, or their clientele. Together with the support of the Digital Civil Society Lab at Stanford University, our research team is seeking to provide best practice advice on how to manage privacy issues in respect of that information in the absence of sector-specific regulation.
+		</p>
+		<p> 
+		By asking you a few questions, we can provide an evidence-based, curated and prioritized list of implementation-level best practice advice and guidance to address your concerns. 
+		</p>
+
+	</div>
+	<div style="text-align:center"> 
+		<a class="btn btn-outline-secondary js-scroll-trigger btn-lg" href="{% url 'data_search'%}">Get Started</a>
+	</div>
+
+
+</div>
 {% endblock %}
