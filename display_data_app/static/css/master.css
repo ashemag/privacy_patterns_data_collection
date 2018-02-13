@@ -7,12 +7,25 @@ h1 {
 	font-size: 36px;
 }
 
+table {
+    table-layout: fixed;
+}
+
+th,td, tr {
+	max-width: 50px !important; 
+    word-wrap: break-word;
+	white-space:pre-line;
+}
+
 body, html {
 	height: 100vh;
 	margin: 0;
 	position: relative;
 }
-
+.checkbox {
+	column-count:2; 
+	column-gap: 20px;
+}
 .home {
 	background-color: grey;
 }

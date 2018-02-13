@@ -13,33 +13,20 @@
 
 		 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 		 </p>
-
-		<form action="{% url 'home' %}" method="POST"> {% csrf_token %}
-			<div class="form-check">
-			  <input class="form-check-input" type="checkbox" value="" name='hey' id="check1">
-			  <label class="form-check-label" for="check1">
-				Action 1 
-			  </label>
+		<form action="" method="POST"> {% csrf_token %}
+			<div class="row"> 
+				<div class="card col-sm" style="border:none !important;"> 
+					{% for checkbox in form.field1%}
+						{{ checkbox }}
+					{% endfor %}
+				</div>
+				<div class="card col-sm" style="border:none !important;"> 
+					{% for checkbox in form.field2%}
+						{{ checkbox }}
+					{% endfor %}
+				</div>
 			</div>
-			<div class="form-check">
-			  <input class="form-check-input" type="checkbox" value="" id="check2">
-			  <label class="form-check-label" for="check2">
-				Action 2 
-			  </label>
-			</div>
-			<div class="form-check">
-			  <input class="form-check-input" type="checkbox" value="" id="check3">
-			  <label class="form-check-label" for="check3">
-				Action 3 
-			</label>
-			</div>
-			<a class="btn btn-outline-secondary js-scroll-trigger btn-lg" href="{% url 'form2'%}">Next</a>
-		</form>
-
-
-	   <!--  <form action="{% url 'data_vis' %}" method="POST"> {% csrf_token %}
-			{{ form.as_p }}
-			<button type="submit" class="save btn btn-default">Search</button>
+			<button class="btn btn-outline-secondary js-scroll-trigger btn-lg" type="submit">Submit</button>
 		</form>
 	</div>
 </div>
