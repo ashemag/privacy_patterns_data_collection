@@ -7,43 +7,57 @@ from display_data_app.models import DataEntry, UserModel
 import csv 
 import json 
 import ast 
+import collections
 
+principle_id_to_counts = collections.Counter({'1.2.2': 43, '2.1.1': 21, '3.2.3': 20, '3.1.1': 20, '8.2.2': 18, '2.2.3': 18, '3.2.1': 16, '4.2.2': 16, '4.1.1': 14, '2.2.2': 14, '10.2.5': 13, '4.2.3': 13, '2.2.1': 13, '2.1.0': 13, '8.2.1': 12, '8.2.7': 11, '4.2.4': 10, '4.1.2': 10, '1.2.4': 9, '10.2.4': 9, '7.2.1': 9, '8.2.5': 9, '6.1.1': 8, '1.2.7': 8, '1.2.6': 8, '3.2.4': 8, '5.2.1': 7, '4.2.1': 7, '5.1.1': 6, '4.1.0': 6, '6.2.5': 5, '1.2.10': 5, '3.1.2': 5, '7.1.2': 5, '7.1.1': 5, '5.2.3': 5, '7.2.2': 5, '7.2.3': 4, '1.2.11': 4, '10.2.3': 4, '3.1.0': 4, '5.1.0': 4, '3.22.4': 3, '10.2.2': 3, '9.2.1': 3, '7.2.4': 3, '10.2.1': 3, '8.1.1': 3, '7.1.0': 2, '1.2.1': 2, '6.2.1': 2, '8': 2, '1.1.0': 2, '6.2.2': 2, '3.2.2': 2, '6.1.0': 2, '8.2.6': 2, '1.2.5': 2, '6.2.3': 2, '5.2.2': 1, '': 1, '7': 1, '8.2.3': 1, '3.2.3ñ 7.1..1': 1, '10.1.1': 1, '9.1.0': 1, '9.1.1': 1, '6.2.6': 1, '3.3.2': 1})
+
+
+#helper method for populate_databases
+def process_principles_for_entry(principle_ids, data): 
+	tuples_list = []
+	for principle in principle_ids: 
+		tuples_list.append([principle, principle_id_to_counts[principle]])
+	tuples_list = sorted(tuples_list, key=lambda tup: tup[1], reverse=True) 
+	notes, subprinciples, pos_recs, data_types = [], [], [], []
+
+	for principle, count in tuples_list: 
+		if principle in data: 		
+			subprinciple, note, pos_rec, data_type = data[principle]
+			notes.append(note)
+			subprinciples.append(subprinciple)
+			pos_recs.append(pos_rec)
+			data_types.append(data_type)
+	return notes, subprinciples, pos_recs, data_types 
+			
 def populate_database(): 
 	#get data from privacy_principles doc 
 	filename = 'display_data_app/privacy_principles.csv'
 	data = {}
+	gap_principle_mapping = {}
 	with open(filename) as csvfile: 
 		reader = csv.DictReader(csvfile)
 		for i, row in enumerate(reader): 
 			principle_id, subprinciple, note  = row['GAPP #'], row['GAPP Subprinciple'], row['GAPP Note']
 			pos_rec, data_type = row['"Positive" Recommendation'], row['Actions with Data (from User Questionnaire)']
 			data[principle_id] = [subprinciple, note, pos_rec, data_type]
+			gap_principle_mapping[principle_id] = subprinciple
+
 	processed_data = []
 	filename2 = 'display_data_app/ftc_cases.csv'
+	#count principles 
+	ctr = []
 	with open(filename2) as csvfile: 
 		reader = csv.DictReader(csvfile)
 		for i, row in enumerate(reader): 
 			principle_id, case_name = row['Privacy Principle - Primary'], row['Case Name']
-
 			case_url, company_type_key, location, last_updated = row['Case URL'], row['Company Type Key'], row['Location'], row['Last Updated']
-			principles_id = [x.strip() for x in principle_id.split(';')]
-			if principles_id == ['']: 
+			principle_ids = [x.strip() for x in principle_id.split(';')]
+			if principle_ids == ['']: 
 				continue 
-			if 'N/A' in principles_id[0]: 
+			if 'N/A' in principle_ids[0]: 
 				continue 
-			count_happens, count_doesnt = 0, 0
 			
-			notes = []
-			subprinciples = []
-			pos_recs = []
-			data_types = []
-			for principle_id in principles_id: 	
-				if principle_id in data: 		
-					subprinciple, note, pos_rec, data_type = data[principle_id]
-					notes.append(note)
-					subprinciples.append(subprinciple)
-					pos_recs.append(pos_rec)
-					data_types.append(data_type)
+			notes, subprinciples, pos_recs, data_types = process_principles_for_entry(principle_ids, data)
 
 			data_type_temp = set() 
 			for data_type in data_types: 
@@ -54,10 +68,10 @@ def populate_database():
 				else: 
 					data_type_temp.add(data_type)
 
-
 			data_entry = [case_name, case_url, last_updated, location, company_type_key, ('\n\n').join(subprinciples), ('\n\n').join(notes), ('\n\n').join(pos_recs), list(data_type_temp)]
 			processed_data.append(data_entry)
 	
+	ctr_dict = collections.Counter(ctr) #becomes principles_id_to_counts
 	DataEntry.objects.all().delete() 
 
 	#add data to model 
