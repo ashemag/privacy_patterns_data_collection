@@ -193,6 +193,9 @@ def faq(request):
 def glossary(request): 
 	return render(request, 'glossary.html')
 
+def bubble_plot(request): 
+	return render(request, 'bubble_plot.html')
+
 def data_search_info(request): 
 	return render(request, 'data_search_info.html')
 
