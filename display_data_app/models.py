@@ -102,7 +102,12 @@ DATA_USAGE = (
 
 class Recommendation(models.Model): 
     text = models.TextField(default='', null=True, blank=True)
-    priority_number = models.TextField(default='', null=True, blank=True)
+    principle_id = models.TextField(default='', null=True, blank=True)
+    priority_number = models.IntegerField(default=0)
+    note = models.TextField(default='')
+    subprinciple = models.TextField(default='')
+    def __str__(self): 
+        return self.principle_id + '-' + self.subprinciple
 
 class DataEntry(models.Model): 
     case_name = models.TextField(default='')

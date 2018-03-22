@@ -25,7 +25,7 @@ class UserModelAdmin(admin.ModelAdmin):
 	list_display=['data_usage', 'location', 'industries']
 
 class RecommendationModelAdmin(admin.ModelAdmin): 
-	list_display=['id', 'text']
+	list_display=['id', 'principle_id', 'subprinciple']
 
 # Register your models here.
 admin.site.register(DataEntry, DataEntryAdmin)

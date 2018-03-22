@@ -11,42 +11,22 @@ import collections
 
 principle_id_to_counts = collections.Counter({'1.2.2': 43, '2.1.1': 21, '3.2.3': 20, '3.1.1': 20, '8.2.2': 18, '2.2.3': 18, '3.2.1': 16, '4.2.2': 16, '4.1.1': 14, '2.2.2': 14, '10.2.5': 13, '4.2.3': 13, '2.2.1': 13, '2.1.0': 13, '8.2.1': 12, '8.2.7': 11, '4.2.4': 10, '4.1.2': 10, '1.2.4': 9, '10.2.4': 9, '7.2.1': 9, '8.2.5': 9, '6.1.1': 8, '1.2.7': 8, '1.2.6': 8, '3.2.4': 8, '5.2.1': 7, '4.2.1': 7, '5.1.1': 6, '4.1.0': 6, '6.2.5': 5, '1.2.10': 5, '3.1.2': 5, '7.1.2': 5, '7.1.1': 5, '5.2.3': 5, '7.2.2': 5, '7.2.3': 4, '1.2.11': 4, '10.2.3': 4, '3.1.0': 4, '5.1.0': 4, '3.22.4': 3, '10.2.2': 3, '9.2.1': 3, '7.2.4': 3, '10.2.1': 3, '8.1.1': 3, '7.1.0': 2, '1.2.1': 2, '6.2.1': 2, '8': 2, '1.1.0': 2, '6.2.2': 2, '3.2.2': 2, '6.1.0': 2, '8.2.6': 2, '1.2.5': 2, '6.2.3': 2, '5.2.2': 1, '': 1, '7': 1, '8.2.3': 1, '3.2.3ñ 7.1..1': 1, '10.1.1': 1, '9.1.0': 1, '9.1.1': 1, '6.2.6': 1, '3.3.2': 1})
 
-
-#helper method for populate_databases, called on each data entry 
-# def process_principles_for_entry(principle_ids, data): 
-#   #get order of recommendations 
-#   tuples_list = []
-#   for principle in principle_ids: 
-#       tuples_list.append([principle, principle_id_to_counts[principle]])
-#   tuples_list = sorted(tuples_list, key=lambda tup: tup[1], reverse=True) 
-	
-#   #populate subprinciples, positive recommendations, and data types list  
-#   subprinciples, pos_recs, data_types = [], [], []
-#   for i, (principle, count) in enumerate(tuples_list): 
-#       if principle in data:       
-#           subprinciple, pos_rec, data_type = data[principle]
-#           subprinciples.append(subprinciple)
-#           rec = Recommendation(id=i,text = pos_rec)
-#           rec.save() 
-#           pos_recs.append(rec) #saves rec object (can save space by saving id?) 
-#           data_types.append(data_type)
-#   return subprinciples, pos_recs, data_types 
-
 #populates recommendations database 
+#maps principle_id to recommendation object id 
 def recommendations_list(filename): 
-	principle_mapping = {} #83 recommendations, maps principle_id to id 
+	principle_mapping = {} 
 	with open(filename) as csvfile: 
 		reader = csv.DictReader(csvfile)
 		for i, row in enumerate(reader): 
 			principle_id, pos_rec = row['GAPP #'], row['"Positive" Recommendation']
+			subprinciple, note = row["GAPP Subprinciple"], row["GAPP Note"]
 			principle_mapping[principle_id] = i 
 			priority_number = principle_id_to_counts[principle_id]
-			rec = Recommendation(id=i, priority_number=str(priority_number), text = pos_rec)
+			rec = Recommendation(id=i, priority_number=priority_number, text = pos_rec, principle_id = principle_id, note=note, subprinciple=subprinciple)
 			rec.save() 
 	return principle_mapping 
 	
 def process_data_types(principle_ids, data):
-
 	data_types_raw = [data[i] for i in principle_ids if i in data] 
 	data_types = set()
 	for data_type in data_types_raw: 
