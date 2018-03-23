@@ -16,8 +16,10 @@ class RecommendationInline(admin.StackedInline):
 class DataEntryAdmin(admin.ModelAdmin): 
 	list_display = ['case_name', 'case_url', 'last_updated']
 	search_fields = ['case_name', 'data_usage', 'location', 'subprinciples']
-	inlines = [RecommendationInline]
-	exclude = ['positive_recommendations', 'subprinciples']
+	# inlines = [RecommendationInline]
+	# exclude = ['positive_recommendations', 'subprinciples']
+	filter_horizontal = ('positive_recommendations',) 
+
 	class Meta: 
 		model = DataEntry 
 

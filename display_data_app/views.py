@@ -20,9 +20,10 @@ def recommendations_list(filename):
 		for i, row in enumerate(reader): 
 			principle_id, pos_rec = row['GAPP #'], row['"Positive" Recommendation']
 			subprinciple, note = row["GAPP Subprinciple"], row["GAPP Note"]
+			ref = row['GAPP Ref']
 			principle_mapping[principle_id] = i 
 			priority_number = principle_id_to_counts[principle_id]
-			rec = Recommendation(id=i, priority_number=priority_number, text = pos_rec, principle_id = principle_id, note=note, subprinciple=subprinciple)
+			rec = Recommendation(id=i, priority_number=priority_number, text = pos_rec, principle_id = principle_id, note=note, subprinciple=subprinciple, ref=ref)
 			rec.save() 
 	return principle_mapping 
 	
