@@ -1,3 +1,8 @@
 # virtual envs 
 venv_temp
 package/
+
+#all pycs
+*.pyc
+client_secret.json
+config.json 
