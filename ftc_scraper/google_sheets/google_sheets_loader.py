@@ -1,11 +1,13 @@
 from __future__ import print_function
 import httplib2
-import os
 
 from apiclient import discovery
 from oauth2client import client
 from oauth2client import tools
 from oauth2client.file import Storage
+
+import os,sys,inspect #to access ConfigLoader
+sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir))
 from config.config_loader import ConfigLoader
 
 # If modifying these scopes, delete your previously saved credentials
@@ -55,10 +57,6 @@ class GoogleSheets():
 		Writes values to google sheet  
 		"""
 		config_data = ConfigLoader().config()
-		# print(config_data['SpreadsheetId'])
-		
-		# exit() 
-
 		credentials = self.get_credentials()
 		http = credentials.authorize(httplib2.Http())
 		discoveryUrl = ('https://sheets.googleapis.com/$discovery/rest?'
@@ -76,6 +74,7 @@ class GoogleSheets():
 		result = service.spreadsheets().values().update(spreadsheetId=spreadsheetId, valueInputOption='USER_ENTERED', range="A3:B3", body=body).execute()
 		print('{0} cells updated.'.format(result.get('updatedCells')));
 
+#for testing 
 if __name__ == "__main__":
 	g = GoogleSheets()
 	g.main()

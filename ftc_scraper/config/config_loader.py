@@ -17,5 +17,6 @@ class ConfigLoader():
 	def load(self, config_file): 
 		""" Reads JSON file and assign it to instance variable """ 
 		with open(config_file) as data_file: 
+			print(data_file)
 			self._parsed_config = json.load(data_file)
 		return self._parsed_config
