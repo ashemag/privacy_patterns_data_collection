@@ -5,4 +5,9 @@ package/
 #all pycs
 *.pyc
 client_secret.json
+
+#sensitive info that should not be saved to github 
 config.json 
+
+#makefile testing 
+output.txt

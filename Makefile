@@ -5,10 +5,9 @@ AWS_REGION = us-west-2
 FUNCTION_HANDLER = lambda_handler
 LAMBDA_ROLE = arn:aws:iam::889200810732:role/service-role/basic-role
 
-#Default commands
-install: virtual 
+#Commands
 build: clean_package build_package_tmp copy_python remove_unused zip 
-deploy: lambda_delete lambda_create 
+update: build lambda_delete lambda_create lambda_run 
 
 clean_package: #delete everything 
 	rm -rf ./package/*
@@ -60,3 +59,13 @@ lambda_create:
 		--runtime python2.7 \
 		--timeout 15 \
 		--memory-size 128 \
+		--environment Variables={Example=Success} \
+
+lambda_run: 
+	aws lambda invoke \
+		--invocation-type RequestResponse \
+		--function-name $(PROJECT) \
+		--region $(AWS_REGION) \
+		--log-type Tail \
+		--payload '{"key1":"value1", "key2":"value2", "key3":"value3"}' \
+		outputfile.txt 

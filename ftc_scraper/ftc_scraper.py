@@ -1,6 +1,6 @@
 #!/usr/bin/python
-
 from __future__ import print_function
+import os 
 import json
 from config.config_loader import ConfigLoader 
 from crawl.crawl_loader import Crawler 
@@ -31,12 +31,13 @@ Iter1:
 -People manually add what is in our sheet to the database 
 '''
 def lambda_handler(event, context): #deployed by aws 
-	data = crawler.crawl() 
-	if len(data) > 0: 
-		#send emails 
-		#add to google sheet 
-		return build_json_doc("%d cases added " % (len(data)))
-	return build_json_doc("No cases added.")
+	# data = crawler.crawl() 
+	# if len(data) > 0: 
+	# 	#send emails 
+	# 	#add to google sheet 
+	# 	return build_json_doc("%d cases added " % (len(data)))
+	# return build_json_doc("No cases added.")
+	return build_json_doc(os.environ['Example'])
 
 def build_json_doc(value): 
 	doc = {"result": value}

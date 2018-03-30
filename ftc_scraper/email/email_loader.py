@@ -8,24 +8,39 @@ from config.config_loader import ConfigLoader
 class Emailer():
 	default_content = "Hey there! This is a test from our python script!"
 
-	def send_email(self, content=default_content, recipients = ['ashemag@stanford.edu']): 
-		config_data = ConfigLoader().config()
-		me = 'ashe@cs.stanford.edu'
-		for recipient in recipients: 
-			msg = MIMEText(content)
-			msg['Subject'] = 'Automated FTC Scraper Update'
-			msg['From'] = me
-			msg['To'] = recipient
+	# def server(): 
+		
+	# 	# try:
+	# 	# 	server = smtplib.SMTP(host, port)
+	# 	# 	server.ehlo()
+	# 	# 	server.starttls()
+	# 	# 	server.login(username, password)
+	# 	# 	server.sendmail(mail_from, mail_to, message)
+	# 	# 	server.close()
+	# 	# 	return True
+	# 	# except Exception as ex:
+	# 	# 	print (ex)
+	# 	# 	return False
 
-			# Send the message via our own SMTP server, but don't include the
-			# envelope header.
-			s = smtplib.SMTP('localhost')
-			s.sendmail(me, [recipient], msg.as_string())
-			s.quit() 
-			print("Finshed sending!")
+
+	# def send_email(self, content=default_content, recipients = ['ashemag@stanford.edu']): 
+	# 	# config_data = ConfigLoader().config()
+	# 	# me = 'ashe@cs.stanford.edu'
+	# 	# for recipient in recipients: 
+	# 	# 	msg = MIMEText(content)
+	# 	# 	msg['Subject'] = 'Automated FTC Scraper Update'
+	# 	# 	msg['From'] = me
+	# 	# 	msg['To'] = recipient
+
+	# 	# 	# Send the message via our own SMTP server, but don't include the
+	# 	# 	# envelope header.
+	# 	# 	s = smtplib.SMTP('localhost')
+	# 	# 	s.sendmail(me, [recipient], msg.as_string())
+	# 	# 	s.quit() 
+	# 	# 	print("Finshed sending!")
 
 
 #for testing 
 if __name__ == "__main__":
-	e = Emailer()
-	e.send_email() 
+	# e = Emailer()
+	# e.send_email() 
