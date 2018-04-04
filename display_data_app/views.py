@@ -98,7 +98,7 @@ def populate_database():
 
 #homepage 
 def index(request): 
-	populate_database()
+	#populate_database()
 	return render(request, 'index.html')
 
 #helper for DataVisView
