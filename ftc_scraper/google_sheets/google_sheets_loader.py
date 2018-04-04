@@ -6,10 +6,6 @@ from oauth2client import client
 from oauth2client import tools
 from oauth2client.file import Storage
 
-import os,sys,inspect #to access ConfigLoader
-sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), os.pardir))
-from config.config_loader import ConfigLoader
-
 # If modifying these scopes, delete your previously saved credentials
 # at ~/.credentials/sheets.googleapis.com-python-quickstart.json
 SCOPES = 'https://www.googleapis.com/auth/spreadsheets'
@@ -52,11 +48,12 @@ class GoogleSheets():
 			print('Storing credentials to ' + credential_path)
 		return credentials
 
-	def main(self, values_to_write=[['ok', 'why']]):
+	def get_range_encoding()
+	
+	def write(self, values_to_write=[['ok', 'why']], col_number = 2):
 		"""
 		Writes values to google sheet  
 		"""
-		config_data = ConfigLoader().config()
 		credentials = self.get_credentials()
 		http = credentials.authorize(httplib2.Http())
 		discoveryUrl = ('https://sheets.googleapis.com/$discovery/rest?'
@@ -64,8 +61,10 @@ class GoogleSheets():
 		service = discovery.build('sheets', 'v4', http=http,
 								  discoveryServiceUrl=discoveryUrl)
 
-		spreadsheetId = config_data['SpreadsheetId']
+		spreadsheetId = os.environ['spreadsheet_id']
 
+		range_encoded = self.get_range_encoding(col_number) 
+		
 		body = {'values': values_to_write}
 		# result = service.spreadsheets().values().get(
 		# 	spreadsheetId=spreadsheetId, range='A1:B2').execute()
@@ -77,4 +76,4 @@ class GoogleSheets():
 #for testing 
 if __name__ == "__main__":
 	g = GoogleSheets()
-	g.main()
+	g.write()

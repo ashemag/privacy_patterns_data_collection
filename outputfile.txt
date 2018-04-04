@@ -1,1 +1,1 @@
-"{\"result\": \"Success\"}"
+{"errorMessage": "module initialization error"}

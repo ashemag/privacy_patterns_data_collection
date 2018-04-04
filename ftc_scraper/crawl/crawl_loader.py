@@ -5,7 +5,6 @@ from dateutil import parser
 
 class Crawler():
 	KEY_TAGS = ['data security', 'consumer privacy', 'privacy', 'security', 'privacy and security', 'privacy shield']
-
 	'''
 	Find all cases on the page
 	'''
@@ -60,6 +59,7 @@ class Crawler():
 	Extracts all case data given a set of case urls 
 	'''
 	def extract_case_data(self, data, case_urls): 
+		stop_page_reached = False 
 		for i, case_url in enumerate(case_urls ):
 			print("On case " + str(i + 1))
 			html_doc = urllib2.urlopen(case_url).read()
@@ -68,16 +68,55 @@ class Crawler():
 			update_time = self.extract_text(soup, 'Last Updated:')
 			case_number = self.extract_text(soup, 'FTC Matter/File Number:')
 			if self.valid_tags(tags): 
-				print("happens")
+				if self.is_stop_time(test_date_str = update_time): 
+					stop_page_reached = True  
 				title = soup.head.title.string
 				processed_title = title.split("|")[0].strip()
 				data[processed_title.encode('utf-8')] = [case_url, case_number, update_time,', '.join(tags).encode('utf-8')] 	
+		return stop_page_reached
+
+	#HELPER: get next page url in sequence 
+	@staticmethod 
+	def get_next_url(url, page_count): 
+		if "?" not in url: 
+			url = "https://www.ftc.gov/enforcement/cases-proceedings?page=1"
+		else: 
+			url = "https://www.ftc.gov/enforcement/cases-proceedings?page=" + str(page_count) 
+		return url 
+
+	#HELPER: evaluate if test date string is before stop date string 
+	@staticmethod
+	def is_stop_time(stop_date_str = 'November 29, 2017', test_date_str ="March 23, 2018"): 
+		# today = datetime.date.today()
+		# week_ago = today - datetime.timedelta(days=7)
+		stop_date = parser.parse(stop_date_str).date() 
+		test_date = parser.parse(test_date_str).date() 
+		return test_date < stop_date 
+
 	#Driver 
 	def crawl(self):
-		start_url = 'https://www.ftc.gov/enforcement/cases-proceedings'
+		url = 'https://www.ftc.gov/enforcement/cases-proceedings'
+		page_count = 0 
 		data = {}
-		case_urls = self.extract_case_urls(start_url)
-		# extract cases from each case url 
-		self.extract_case_data(data, case_urls)
+
+		while (page_count < 2): 
+			case_urls = self.extract_case_urls(url)
+			# extract cases from each case url 
+			stop_page_reached = self.extract_case_data(data, case_urls)
+			page_count += 1
+			print "Completed page " + str(page_count)
+			url = self.get_next_url(url, page_count)
+
 		return data 
+
+#for testing 
+if __name__ == "__main__":
+	c = Crawler()
+	data = c.crawl()
+
+	print(data)
+
+
+
+
 		

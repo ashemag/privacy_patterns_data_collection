@@ -6,12 +6,12 @@
 ## Prerequisites 
 
 ### Makefile 
-Install awescli or command line AWS: 
-	brew install awscli 
+Install awscli or command line AWS: 
+	pip install awscli 
+
+Create virtual environment `venv_temp'
 
 ### Google Sheets class 
 Install google sheets client: 
 	pip install --upgrade google-api-python-client
 	Instructions: https://developers.google.com/sheets/api/quickstart/python
-
-Note: To run you will need access to the config file with sensitive information. Email ashe@cs.stanford.edu for this.

@@ -2,8 +2,11 @@
 from __future__ import print_function
 import os 
 import json
-from config.config_loader import ConfigLoader 
-from crawl.crawl_loader import Crawler 
+import boto3 
+import base64
+
+from crawl.crawl_loader import Crawler
+from google_sheets.google_sheets_loader import GoogleSheets
 
 ''' 
 Dates should never be more than a week old when this is triggered weekly. 
@@ -30,14 +33,23 @@ Iter1:
 -Email point people that sheet has been added to 
 -People manually add what is in our sheet to the database 
 '''
+
+# Decrypt code should run once as variables stored outside of the function
+# handler so that these are decrypted once per container
+# ENCRYPTED = os.environ['Example']
+# DECRYPTED = boto3.client('kms').decrypt(CiphertextBlob=base64.b64decode(ENCRYPTED))['Plaintext']
+# TEST = False 
 def lambda_handler(event, context): #deployed by aws 
 	# data = crawler.crawl() 
 	# if len(data) > 0: 
 	# 	#send emails 
 	# 	#add to google sheet 
 	# 	return build_json_doc("%d cases added " % (len(data)))
-	# return build_json_doc("No cases added.")
-	return build_json_doc(os.environ['Example'])
+	# if TEST: 
+
+	print(ENCRYPTED)
+	print(DECRYPTED)
+	return build_json_doc(DECRYPTED)
 
 def build_json_doc(value): 
 	doc = {"result": value}
@@ -45,4 +57,10 @@ def build_json_doc(value):
 
 #for testing 
 if __name__ == "__main__":
-	lambda_handler('event', 'context')
+
+	# TEST = True 
+	data = Crawler().crawl() 
+	
+
+
+	# lambda_handler('event', 'context')
