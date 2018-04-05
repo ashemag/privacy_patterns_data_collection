@@ -15,6 +15,7 @@ class Importer:
 		self.filename1 = privacy_principles_csv
 		self.filename2 = cases_csv 
 		print(self.filename2)
+
 	#populates recommendations database 
 	#maps principle_id to recommendation object id 
 	def _recommendations_list(self, filename): 
@@ -67,7 +68,7 @@ class Importer:
 			for i, row in enumerate(reader): 
 				principle_ids_raw, case_name = row['Privacy Principle - Primary'], row['Case Name']
 				case_url, company_type_key, location, last_updated = row['Case URL'], row['Company Type Key'], row['Location'], row['Last Updated']
-				tags, specific_violation = row['Tags'], row['Specific Violation ']
+				tags, specific_violation = row['Tags'], row['Specific Violation']
 
 				principle_ids = [x.strip() for x in principle_ids_raw.split(';')]
 				if principle_ids == ['']: 

@@ -6,12 +6,12 @@ from display_data_app.forms import DataTypeForm, LocationForm, IndustryForm
 from display_data_app.models import DataEntry, UserModel, Recommendation
 from display_data_app.import_data import Importer 
 from display_data_app.export_data import Exporter 
-
+import ast 
 #homepage 
 def index(request): 
 	# Importer(cases_csv='display_data_app/ftc_cases_to_add.csv').populate_database(REPLACE=False)
-	Exporter().export() 
-	exit() 
+	#Exporter().export() 
+	#exit() 
 
 	#populate_database()
 	return render(request, 'index.html')
@@ -19,7 +19,8 @@ def index(request):
 #helper for DataVisView
 def is_valid(data_entry, data_types, locations, industries): 
 	if data_entry.location in locations and data_entry.company_type_key in industries: 
-		data_entry_data_types = ast.literal_eval(data_entry.data_type)
+		# data_entry_data_types = ast.literal_eval(data_entry.data_usage)
+		data_entry_data_types = data_entry.data_usage
 		for data_type in data_entry_data_types: 
 			if data_type in data_types: 
 				return True # return if they share at least one data type 
@@ -32,7 +33,7 @@ class DataVisView(TemplateView):
 
 	def data_types(self): 
 		user = UserModel.objects.get(id=1)  
-		return ast.literal_eval(user.data_type)
+		return ast.literal_eval(user.data_usage)
 
 	def locations(self): 
 		user = UserModel.objects.get(id=1)  
@@ -44,7 +45,7 @@ class DataVisView(TemplateView):
 
 	def data(self): 
 		user = UserModel.objects.get(id=1)  
-		data_type_list = ast.literal_eval(user.data_type)
+		data_type_list = ast.literal_eval(user.data_usage)
 		locations_list = ast.literal_eval(user.location)
 		industries_list = ast.literal_eval(user.industries)
 

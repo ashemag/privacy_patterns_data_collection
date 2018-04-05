@@ -1,7 +1,7 @@
 {% extends "data_search_base.html" %}
 {% block info %}
 <h3> FTC Case Data From Filters</h3>
-<p> Filters include {{ view.data_types}}, {{view.locations}}, {{view.industries}} </p>
+<p> Filters include {{ view.action_list}}, {{view.locations}}, {{view.industries}} </p>
 
 {% if view.data %}
 	<table  class="table table-compact table-bordered">
@@ -17,7 +17,7 @@
 		    	<td>
 		    		<a href="{{ entry.case_url }}" target="blank"> {{ entry.case_name }} </a>
 		    	</td>
-		    	<td>{{ entry.pos_rec}} </td>
+		    	<td>{{ entry.positive_recommendations}} </td>
 		    	<td>{{ entry.company_type_key}} </td>
 		    	<td>{{ entry.location}} </td>
 
