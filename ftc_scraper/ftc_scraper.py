@@ -1,5 +1,5 @@
 #!/usr/bin/python
-from __future__ import print_function
+frogi __future__ import print_function
 import os 
 import json
 import boto3 
@@ -9,12 +9,6 @@ import datetime
 from crawl.crawl_loader import Crawler
 from google_sheets.google_sheets_loader import GoogleSheets
 from _email.email_loader import Emailer
-
-# Decrypt code should run once as variables stored outside of the function
-# handler so that these are decrypted once per container
-# ENCRYPTED_SPREADSHEED_ID = os.environ['SpreadsheetId']
-# DECRYPTED_SPREADSHEED_ID= boto3.client('kms').decrypt(CiphertextBlob=base64.b64decode(ENCRYPTED_SPREADSHEED_ID))['Plaintext']
-# os.environ['SpreadsheetId'] = DECRYPTED_SPREADSHEED_ID
 
 def lambda_handler(json_input, context): #deployed by aws 
 	data = Crawler().crawl() 

@@ -1,7 +1,6 @@
 from __future__ import print_function
 import httplib2
 import os 
-
 from apiclient import discovery
 from oauth2client import client
 from oauth2client import tools
@@ -86,8 +85,6 @@ class GoogleSheets():
 
 #for testing 
 if __name__ == "__main__":
-	os.environ['SpreadsheetId'] = '1HnjM8yz9WIKdO16dOOt4GlgSnfhd4PrRvOVGxYP5GmQ'
-
 	g = GoogleSheets()
 	g.write(values_to_write={'Prime Sites, Inc. (Explore Talent)': ['https://www.ftc.gov/enforcement/cases-proceedings/162-3218/prime-sites-inc-explore-talent', '162 3218', 'February 12, 2018', "consumer protection, advertising and marketing, advertising and marketing basics, privacy and security, children's privacy"], 'Sears Holdings Management Corporation, a corporation, in the Matter of': ['https://www.ftc.gov/enforcement/cases-proceedings/082-3099-c-4264/sears-holdings-management-corporation-corporation', '082 3099', 'February 28, 2018', 'consumer protection, advertising and marketing, online advertising and marketing, privacy and security, consumer privacy'], 'PayPal, Inc., In the Matter of': ['https://www.ftc.gov/enforcement/cases-proceedings/162-3102/paypal-inc-matter', '162 3102', 'March 5, 2018', 'consumer protection, credit and finance, payments and billing, privacy and security, consumer privacy, data security, gramm-leach-bliley act, tech']}
 )
