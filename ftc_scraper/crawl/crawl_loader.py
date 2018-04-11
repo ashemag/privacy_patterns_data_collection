@@ -26,7 +26,6 @@ class Crawler():
 			if key in link: 
 				processed_links.add(link)
 		return processed_links
-	
 
 	#helper method to extract tags 
 	@staticmethod
@@ -119,9 +118,8 @@ class Crawler():
 
 #for testing 
 if __name__ == "__main__":
-	c = Crawler()	
-	data = c.crawl()
-	print(data)
+	pass
+
 
 
 

@@ -9,7 +9,7 @@ KEY_ID = arn:aws:kms:us-west-2:889200810732:key/ffed0d5a-4984-4c4a-a3f1-b2ab46e6
 
 #Commands
 build: clean_package build_package_tmp copy_python remove_unused zip 
-update: build lambda_delete lambda_create lambda_run 
+update: build lambda_delete lambda_create 
 
 clean_package: #delete everything 
 	rm -rf ./package/*

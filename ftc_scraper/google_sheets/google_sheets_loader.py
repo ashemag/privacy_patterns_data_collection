@@ -64,7 +64,7 @@ class GoogleSheets():
 		result = service.spreadsheets().values().get(spreadsheetId=spreadsheetId, range='A1:' + col_letter + max_rows).execute()
 		return len(result.get('values', []))
 
-	def write(self, values_to_write=[['ok', 'why'], ['will this work', 'maybe?']]):
+	def write(self, values_to_write=[]):
 		"""
 		Writes values to google sheet  
 		"""
