@@ -9,7 +9,7 @@ class Crawler():
 	Find all cases on the page
 	'''
 	@staticmethod
-	def extract_case_urls(url): 
+	def _extract_case_urls(url): 
 		html_doc = urllib2.urlopen(url).read()
 		soup = BeautifulSoup(html_doc, 'html.parser')
 
@@ -29,7 +29,7 @@ class Crawler():
 
 	#helper method to extract tags 
 	@staticmethod
-	def extract_tags(soup): 
+	def _extract_tags(soup): 
 		divs = soup.find_all('div', class_ = 'field-name-field-tags-view')
 		tags = [] 
 		for div in divs: 
@@ -40,15 +40,15 @@ class Crawler():
 	
 	#helper method to extract text from html given key 
 	@staticmethod
-	def extract_text(soup, key): 
-		text = soup.get_text().encode('utf-8')
+	def _extract_text(soup, key): 
+		text = soup._get_text().encode('utf-8')
 		if key in text: 
 			text = text.split(key)[1].strip().split('\n')[0].strip()
 			return text 
 		return 'N/A'
 
 	#helper method to detect valid tags 
-	def valid_tags(self, tags):
+	def _valid_tags(self, tags):
 		for tag in tags: 
 			if tag in self.KEY_TAGS: 
 				return True 
@@ -57,18 +57,18 @@ class Crawler():
 	'''
 	Extracts all case data given a set of case urls 
 	'''
-	def extract_case_data(self, data, case_urls, verbose): 
+	def _extract_case_data(self, data, case_urls, verbose): 
 		stop_page_reached = False 
 		for i, case_url in enumerate(case_urls ):
 			if verbose: 
 				print("On case " + str(i + 1))
 			html_doc = urllib2.urlopen(case_url).read()
 			soup = BeautifulSoup(html_doc, 'html.parser')
-			tags = self.extract_tags(soup)
-			update_time = self.extract_text(soup, 'Last Updated:')
-			case_number = self.extract_text(soup, 'FTC Matter/File Number:')
-			if self.valid_tags(tags): 
-				if self.is_stop_time(test_date_str = update_time): 
+			tags = self._extract_tags(soup)
+			update_time = self._extract_text(soup, 'Last Updated:')
+			case_number = self._extract_text(soup, 'FTC Matter/File Number:')
+			if self._valid_tags(tags): 
+				if self._is_stop_time(test_date_str = update_time): 
 					stop_page_reached = True  
 				else: 
 					title = soup.head.title.string
@@ -78,7 +78,7 @@ class Crawler():
 
 	#HELPER: get next page url in sequence 
 	@staticmethod 
-	def get_next_url(url, page_count): 
+	def _get_next_url(url, page_count): 
 		if "?" not in url: 
 			url = "https://www.ftc.gov/enforcement/cases-proceedings?page=1"
 		else: 
@@ -87,7 +87,7 @@ class Crawler():
 
 	#HELPER: evaluate if test date string is before stop date string 
 	@staticmethod
-	def is_stop_time(stop_date_str = 'November 29, 2017', test_date_str ="March 23, 2018", LAMBDA = True): 
+	def _is_stop_time(stop_date_str = 'November 29, 2017', test_date_str ="March 23, 2018", LAMBDA = True): 
 		if LAMBDA: 
 			today = datetime.date.today()
 			week_ago = today - datetime.timedelta(days=7)
@@ -106,13 +106,13 @@ class Crawler():
 		stop_page_reached = False 
 
 		while (stop_page_reached == False): 
-			case_urls = self.extract_case_urls(url)
+			case_urls = self._extract_case_urls(url)
 			# extract cases from each case url 
-			stop_page_reached = self.extract_case_data(data, case_urls, verbose)
+			stop_page_reached = self._extract_case_data(data, case_urls, verbose)
 			page_count += 1
 			if verbose: 
 				print "Completed page " + str(page_count)
-			url = self.get_next_url(url, page_count)
+			url = self._get_next_url(url, page_count)
 
 		return data 
 

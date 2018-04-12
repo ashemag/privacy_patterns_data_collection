@@ -12,7 +12,7 @@ from _email.email_loader import Emailer
 
 def lambda_handler(json_input, context): #deployed by aws 
 	data = Crawler().crawl() 
-	data = dict_to_list(data) 
+	data = _dict_to_list(data) 
 
 	today = datetime.date.today()
 	week_ago = today - datetime.timedelta(days=7)
@@ -25,14 +25,14 @@ def lambda_handler(json_input, context): #deployed by aws
 		update = "\n\nNo privacy related FTC cases found.\n"
 	update += "Please see the following link for more details: https://docs.google.com/spreadsheets/d/1HnjM8yz9WIKdO16dOOt4GlgSnfhd4PrRvOVGxYP5GmQ/edit?usp=sharing"
 	recipients=['ashe.magalhaes@gmail.com', 'yishg@stanford.edu', 'drtracyann@gmail.com']
-	Emailer().send_email(content=msg + updamte, recipients=recipients)
-	return build_json_doc("Success")
+	Emailer().send_email(content=msg + update, recipients=recipients)
+	return _build_json_doc("Success")
 
-def build_json_doc(value): 
+def _build_json_doc(value): 
 	doc = {"Result": value}
 	return json.dumps(doc)
 
-def dict_to_list(data): 
+def _dict_to_list(data): 
 	_list = []
 	for key in data: 
 		entry = [key] + data[key]

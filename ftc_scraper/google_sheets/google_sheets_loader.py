@@ -14,7 +14,7 @@ APPLICATION_NAME = 'Privacy Patterns Project'
 
 class GoogleSheets():
 	@staticmethod
-	def get_credentials():
+	def _get_credentials():
 		"""Gets valid user credentials from storage.
 
 		If nothing has been stored, or if the stored credentials are invalid,
@@ -49,9 +49,9 @@ class GoogleSheets():
 		return credentials
 
 	# Gets range encoding for adding values to sheet
-	def get_range_encoding(self, service, spreadsheetId, col_number, row_number):
+	def _get_range_encoding(self, service, spreadsheetId, col_number, row_number):
 		col_letter = chr(ord('A') + col_number - 1)
-		existing_row_number = self.fetch_existing_row_number(service, spreadsheetId, col_letter) + 1
+		existing_row_number = self._fetch_existing_row_number(service, spreadsheetId, col_letter) + 1
 		range_encoding = 'A' + str(existing_row_number) + ':'
 		row_number += existing_row_number
 		range_encoding = range_encoding + str(col_letter) + str(row_number) 
@@ -59,7 +59,7 @@ class GoogleSheets():
 
 	# Fetches existing numbe of rows in sheet 
 	@staticmethod 
-	def fetch_existing_row_number(service, spreadsheetId, col_letter): 
+	def _fetch_existing_row_number(service, spreadsheetId, col_letter): 
 		max_rows = '10000000'
 		result = service.spreadsheets().values().get(spreadsheetId=spreadsheetId, range='A1:' + col_letter + max_rows).execute()
 		return len(result.get('values', []))
@@ -68,7 +68,7 @@ class GoogleSheets():
 		"""
 		Writes values to google sheet  
 		"""
-		credentials = self.get_credentials()
+		credentials = self._get_credentials()
 		http = credentials.authorize(httplib2.Http())
 		discoveryUrl = ('https://sheets.googleapis.com/$discovery/rest?'
 						'version=v4')
@@ -77,7 +77,7 @@ class GoogleSheets():
 
 		spreadsheetId = os.environ['SpreadsheetId']
 
-		range_encoding = self.get_range_encoding(service, spreadsheetId, len(values_to_write[0]), len(values_to_write)) 
+		range_encoding = self._get_range_encoding(service, spreadsheetId, len(values_to_write[0]), len(values_to_write)) 
 		body = {'values': values_to_write}
 		result = service.spreadsheets().values().update(spreadsheetId=spreadsheetId, valueInputOption='USER_ENTERED', range=range_encoding, body=body).execute()
 		updated_cell_number = result.get('updatedCells')
