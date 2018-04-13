@@ -26,6 +26,10 @@ class Crawler:
 			
 			links.append(link.get('href'))
 			links_text.append(link.string)	
+			
+			if link.string == 'First': 
+				end_index = i 
+				break 
 
 			if link.string == 'Previous': 
 				end_index = i
@@ -43,13 +47,20 @@ class Crawler:
 
 	@staticmethod
 	def _extract_case_name(soup): 
+		# print(soup.find_all('title'))
 		case_title = soup.find_all('title')[0].text
 		case_name = case_title.split(':')[1].strip()
 		return case_name 
 
 	@staticmethod
-	def _extract_last_updated(soup): 
-		return soup.find_all('strong')[1].text
+	def _extract_last_updated(url):
+		dates = []
+		html_doc = urllib2.urlopen(url).read()
+		soup = BeautifulSoup(html_doc, 'html.parser')
+		for node in soup.find_all('strong'):
+			if node.time is not None: 
+				dates.append(node.time.text)
+		return dates
 
 	@staticmethod
 	def _extract_accountability(soup): 
@@ -65,7 +76,7 @@ class Crawler:
 							return nextNode.text   
 		return ''
 		 
-	def _extract_case_data(self, case_urls, case_numbers, data, case_principles, principle, verbose): 
+	def _extract_case_data(self, case_urls, case_numbers, case_dates, data, case_principles, principle, verbose): 
 		base = 'https://www.priv.gc.ca/'
 		for i, url in enumerate(case_urls): 
 			url = base + url 
@@ -74,11 +85,12 @@ class Crawler:
 			if verbose: 
 				print("On case " + str(i + 1))
 			case_url = url 
+			# print(case_url)
 			case_name = self._extract_case_name(soup)			
 			case_number = case_numbers[i]
 			case_principles[case_number].append(principle)
 	
-			last_updated = self._extract_last_updated(soup)
+			last_updated = case_dates[i]
 			enforcement_authority = 'OPC'
 			location = 'Canada'
 			
@@ -115,6 +127,10 @@ class Crawler:
 				return total 
 		print("SHOULD NOT BE REACHED")
 
+	'''
+	Filters all cases by each privacy principle
+	Examines cases on each page 
+	'''
 	def _crawl_by_principle(self, data, case_principles, principle, verbose=False): 
 		page_number = 1
 		page_limit_reached = False 
@@ -127,19 +143,18 @@ class Crawler:
 				print("Page " + str(page_number))
 			url = start_url + "?p[0]=" + principle 
 			url += "&Page=" + str(page_number) #if page is repetitive, stop 
-			
+			print("PAGE URL: " + url)
 			page_number += 1
 			case_urls = self._extract_case_urls(url, verbose)
 			case_numbers = self._extract_case_numbers(url)
-			self._extract_case_data(case_urls, case_numbers, data, case_principles, principle, verbose)
+			case_dates = self._extract_last_updated(url)
+			self._extract_case_data(case_urls, case_numbers, case_dates, data, case_principles, principle, verbose)
 			case_count += len(case_numbers)
 			print("Data length: " + str(len(data)))
 
 			if case_count >= case_total:
-				print("BREAKING") 
 				break 
 			
-
 	@staticmethod
 	def _process_dict(data, dictionary): 
 		for key in dictionary: 
@@ -148,8 +163,7 @@ class Crawler:
 			entry.append(('; ').join(list(col)).strip())
 			data[key] = entry
 
-	def crawl(self, verbose=True):
-		principles = ['4.1']
+	def crawl(self, verbose=False):
 		data = {}
 		case_principles = ct.defaultdict(list)
 		total_no = len(self.privacy_principles)
@@ -157,12 +171,12 @@ class Crawler:
 			if verbose: 
 				print("Principle: " + str(i + 1) + " of " + str(total_no))
 			self._crawl_by_principle(data, case_principles, principle) 
-		
+			if verbose: #helpful in case connection times out 
+				print(data)
+				print(case_principles)
+
 		self._process_dict(data, case_principles)
 		self._write(data)
-
-		#turn case principles into sets 
-
 
 #for testing 
 if __name__ == "__main__":
