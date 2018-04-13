@@ -17,7 +17,12 @@
 		    	<td>
 		    		<a href="{{ entry.case_url }}" target="blank"> {{ entry.case_name }} </a>
 		    	</td>
-		    	<td>{{ entry.positive_recommendations}} </td>
+
+		    	<td>{% for rec in entry.positive_recommendations.all %}
+		    		{{rec.text}}
+
+		    	{% endfor %}
+		    	</td>
 		    	<td>{{ entry.company_type_key}} </td>
 		    	<td>{{ entry.location}} </td>
 
