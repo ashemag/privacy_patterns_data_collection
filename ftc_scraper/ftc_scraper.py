@@ -19,13 +19,13 @@ def lambda_handler(json_input, context): #deployed by aws
 	msg = 'FTC Privacy Case results for %s to %s: ' % (week_ago.strftime("%B %d, %Y"), today.strftime("%B %d, %Y")) 
 	
 	if len(data) > 0: 
-		updated_cell_number = GoogleSheets().write(values_to_write=data)
-		update = "\n\n%d privacy related FTC cases found.\n"
+		updated_cell_number = GoogleSheets().write(values=data)
+		update = "\n\n%d privacy related FTC case(s) found.\n" % (len(data))
 	else: 
 		update = "\n\nNo privacy related FTC cases found.\n"
 	update += "Please see the following link for more details: https://docs.google.com/spreadsheets/d/1HnjM8yz9WIKdO16dOOt4GlgSnfhd4PrRvOVGxYP5GmQ/edit?usp=sharing"
 	recipients=['ashe.magalhaes@gmail.com', 'yishg@stanford.edu', 'drtracyann@gmail.com']
-	Emailer().send_email(content=msg + update, recipients=recipients)
+	Emailer().send_email(content=msg + update, recipients)
 	return _build_json_doc("Success")
 
 def _build_json_doc(value): 
@@ -41,5 +41,6 @@ def _dict_to_list(data):
 
 #for testing 
 if __name__ == "__main__":
-	lambda_handler()
+	os.environ['SpreadsheetId'] = '1HnjM8yz9WIKdO16dOOt4GlgSnfhd4PrRvOVGxYP5GmQ'
+	lambda_handler('input', 'context')
 	exit() 

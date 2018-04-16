@@ -53,13 +53,13 @@ remove_unused: #gets rid of python files/dirs that we don't need to thin out lam
 	# rm -rf ./package/tmp/google*
 	rm -rf ./package/tmp/cryptography*
 	rm -rf ./package/tmp/ipaddress*
-	rm -rf ./package/tmp/pyasn*
-	rm -rf ./package/tmp/rsa*
+	#rm -rf ./package/tmp/pyasn*
+	#rm -rf ./package/tmp/rsa*
 	rm -rf ./package/tmp/s3*
 	rm -rf ./package/tmp/pycparser*
 	rm -rf ./package/tmp/python_dateutil*
 	rm -rf ./package/tmp/wrapt*
-	rm -rf ./package/tmp/idna*
+	# rm -rf ./package/tmp/idna*
 	rm -rf ./package/tmp/cffi*
 	rm -rf ./package/tmp/attr*
 	# rm -rf ./package/tmmp/uri*

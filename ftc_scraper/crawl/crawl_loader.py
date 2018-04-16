@@ -41,7 +41,7 @@ class Crawler():
 	#helper method to extract text from html given key 
 	@staticmethod
 	def _extract_text(soup, key): 
-		text = soup._get_text().encode('utf-8')
+		text = soup.get_text().encode('utf-8')
 		if key in text: 
 			text = text.split(key)[1].strip().split('\n')[0].strip()
 			return text 
@@ -59,7 +59,7 @@ class Crawler():
 	'''
 	def _extract_case_data(self, data, case_urls, verbose): 
 		stop_page_reached = False 
-		for i, case_url in enumerate(case_urls ):
+		for i, case_url in enumerate(case_urls):
 			if verbose: 
 				print("On case " + str(i + 1))
 			html_doc = urllib2.urlopen(case_url).read()
