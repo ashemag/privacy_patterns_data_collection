@@ -9,11 +9,9 @@ from display_data_app.export_data import Exporter
 import ast 
 #homepage 
 def index(request): 
-	# Importer(cases_csv='display_data_app/ftc_cases_to_add.csv').populate_database(REPLACE=False)
+	Importer().populate_database(REPLACE=True)
 	#Exporter().export() 
 	#exit() 
-
-	#populate_database()
 	return render(request, 'index.html')
 
 #helper for DataVisView

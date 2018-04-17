@@ -6,25 +6,31 @@
 {% if view.data %}
 	<table  class="table table-compact table-bordered">
 	    <tr style="font-weight:bold">
-	    	<td> Case Name </td>
+	    	<!-- <td> Case Name </td> -->
 	    	<td> Positive Recommendation </td>
-	    	<td> Industry</td>
-	    	<td> Location </td>
+	    	<!-- <td> Industry</td>
+	    	<td> Location </td> -->
 	    </tr>
 
 		{% for entry in view.data %}
 		    <tr>
-		    	<td>
+		 <!--    	<td>
 		    		<a href="{{ entry.case_url }}" target="blank"> {{ entry.case_name }} </a>
-		    	</td>
-
-		    	<td>{% for rec in entry.positive_recommendations.all %}
-		    		{{rec.text}}
-
+		    	</td> -->
+		    	<td>
+		    	{% for rec in entry.positive_recommendations.all %}
+		    		<div> 
+			    		{% if rec.url != '' %}
+			    			<a href="{{ rec.url }}" >Link</a>
+			    		{% endif %}
+			    		<p style="display:inline;""> 
+			    		{{rec.text | urlize }}
+			    		</p>
+		    		</div>
 		    	{% endfor %}
 		    	</td>
-		    	<td>{{ entry.company_type_key}} </td>
-		    	<td>{{ entry.location}} </td>
+		    	<!-- <td>{{ entry.company_type_key}} </td>
+		    	<td>{{ entry.location}} </td> -->
 
 		    </tr> 
 		{% endfor %}

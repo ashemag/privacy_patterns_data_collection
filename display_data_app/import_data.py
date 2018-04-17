@@ -28,7 +28,8 @@ class Importer:
 				ref = row['GAPP Ref']
 				principle_mapping[principle_id] = i 
 				priority_number = self.principle_id_to_counts[principle_id]
-				rec = Recommendation(id=i, priority_number=priority_number, text = pos_rec, principle_id = principle_id, note=note, subprinciple=subprinciple, ref=ref)
+				pos_rec, url = self.process_pos_recs(pos_rec)
+				rec = Recommendation(id=i, priority_number=priority_number, text = pos_rec, principle_id = principle_id, note=note, subprinciple=subprinciple, ref=ref, url=url)
 				rec.save() 
 		return principle_mapping 
 	
@@ -44,9 +45,24 @@ class Importer:
 			else: 
 				data_types.add(data_type)
 		return data_types
+	
+	def process_pos_recs(self, rec):
+		url = ''
+		if "<" in rec: 
+			rec = rec.replace("<", "")
+			rec = rec.replace(">", "")
+			arr = rec.split(' ')
+			for i, text in enumerate(arr): 
+				if "http" in text: 
+					url = arr[i]
+			rec = rec.replace(url, '')
+			rec.strip() 
+			rec = rec.replace('\n', '')
+		return rec, url 
 
 	#extract data from csvs and populate database 
 	def populate_database(self, REPLACE=True): 
+		print("In populate database")
 		if REPLACE: 
 			Recommendation.objects.all().delete() 
 		principle_mapping = self._recommendations_list(self.filename1)
@@ -68,7 +84,7 @@ class Importer:
 			for i, row in enumerate(reader): 
 				principle_ids_raw, case_name = row['Privacy Principle - Primary'], row['Case Name']
 				case_url, company_type_key, location, last_updated = row['Case URL'], row['Company Type Key'], row['Location'], row['Last Updated']
-				tags, specific_violation = row['Tags'], row['Specific Violation']
+				tags, specific_violation = row['Tags'], row['Specific Violation ']
 
 				principle_ids = [x.strip() for x in principle_ids_raw.split(';')]
 				if principle_ids == ['']: 
@@ -78,6 +94,7 @@ class Importer:
 				
 				data_types = self._process_data_types(principle_ids, data)
 				pos_recs = [principle_mapping[i] for i in principle_ids if i in principle_mapping] 
+
 				subprinciples = [i for i in principle_ids]
 
 				data_entry = [case_name, case_url, last_updated, location, company_type_key, list(data_types), tags, specific_violation, subprinciples, pos_recs]
