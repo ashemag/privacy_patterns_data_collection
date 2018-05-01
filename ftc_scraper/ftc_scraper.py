@@ -11,6 +11,8 @@ from google_sheets.google_sheets_loader import GoogleSheets
 from _email.email_loader import Emailer
 
 def lambda_handler(json_input, context): #deployed by aws 
+	Emailer().send_email(content='Starting test...')
+
 	data = Crawler().crawl() 
 	data = _dict_to_list(data) 
 
@@ -24,7 +26,7 @@ def lambda_handler(json_input, context): #deployed by aws
 	else: 
 		update = "\n\nNo privacy related FTC cases found.\n"
 	update += "Please see the following link for more details: https://docs.google.com/spreadsheets/d/1HnjM8yz9WIKdO16dOOt4GlgSnfhd4PrRvOVGxYP5GmQ/edit?usp=sharing"
-	recipients=['ashe.magalhaes@gmail.com', 'yishg@stanford.edu', 'drtracyann@gmail.com']
+	recipients=['ashe.magalhaes@gmail.com', 'drtracyann@gmail.com']
 	Emailer().send_email(content=msg + update, recipients)
 	return _build_json_doc("Success")
 
