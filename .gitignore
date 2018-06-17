@@ -8,6 +8,8 @@ client_secret.json
 
 #sensitive info that should not be saved to github 
 config.json 
+opc_cases_scraped.csv
+exported_data.csv
 
 #makefile testing 
 outputfile.txt
