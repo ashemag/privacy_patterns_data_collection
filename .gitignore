@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # virtual envs 
 venv_temp
 package/
@@ -119,4 +118,3 @@ ENV/
 
 # mypy
 .mypy_cache/
->>>>>>> 036cd32a152f7f2ed1448eebeb82ab642e1455f4
