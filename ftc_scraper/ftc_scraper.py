@@ -33,6 +33,7 @@ def _build_json_doc(value):
 	doc = {"Result": value}
 	return json.dumps(doc)
 
+# helper function for transforming data from crawler 
 def _dict_to_list(data): 
 	_list = []
 	for key in data: 

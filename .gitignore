@@ -10,6 +10,7 @@ client_secret.json
 config.json 
 opc_cases_scraped.csv
 exported_data.csv
+#.csv 
 
 #makefile testing 
 outputfile.txt

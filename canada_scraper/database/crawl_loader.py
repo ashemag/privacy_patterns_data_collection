@@ -125,7 +125,7 @@ class Crawler:
 				arr = node.text.split('.')[0].split(' ')
 				total = int(arr[len(arr) - 1])
 				return total 
-		print("SHOULD NOT BE REACHED")
+		# sanity check: print("SHOULD NOT BE REACHED")
 
 	'''
 	Filters all cases by each privacy principle
@@ -133,24 +133,25 @@ class Crawler:
 	'''
 	def _crawl_by_principle(self, data, case_principles, principle, verbose=False): 
 		page_number = 1
-		page_limit_reached = False 
 		start_url="https://www.priv.gc.ca/en/opc-actions-and-decisions/investigations/investigations-into-businesses/"
-		case_total = self._get_case_total(start_url + "?p[0]=" + principle + "&Page=" + str(page_number))
+		page_url = start_url + "?p[0]=" + principle + "&Page="
+		case_total = self._get_case_total(page_url + str(page_number))
 		case_count = 0 
 
 		while True: 
-			if verbose: 
-				print("Page " + str(page_number))
-			url = start_url + "?p[0]=" + principle 
 			url += "&Page=" + str(page_number) #if page is repetitive, stop 
-			print("PAGE URL: " + url)
+			
 			page_number += 1
 			case_urls = self._extract_case_urls(url, verbose)
 			case_numbers = self._extract_case_numbers(url)
 			case_dates = self._extract_last_updated(url)
 			self._extract_case_data(case_urls, case_numbers, case_dates, data, case_principles, principle, verbose)
 			case_count += len(case_numbers)
-			print("Data length: " + str(len(data)))
+			
+			if verbose: 
+				print("Page " + str(page_number))
+				print("PAGE URL: " + url)
+				print("Data length: " + str(len(data)))
 
 			if case_count >= case_total:
 				break 
