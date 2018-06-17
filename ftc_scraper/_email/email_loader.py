@@ -8,45 +8,43 @@ from botocore.exceptions import ClientError
 class Emailer():
 	default_content = "Hey there! This is a test from our python script!"
 
-	def send_email(self, content= default_content, recipients = ['ashe.magalhaes@gmail.com']): 
+	def send_email(self, recipient, content= default_content): 
 		SENDER = 'ashe.magalhaes@gmail.com'
 		AWS_REGION = "us-west-2"
 		SUBJECT = "Automated FTC Privacy Cases Scraper Update"
 		BODY_TEXT = (content)        
-		for RECIPIENT in recipients: 
-			print(RECIPIENT)
-			# The character encoding for the email.
-			CHARSET = "UTF-8"
-			# Create a new SES resource and specify a region.
-			client = boto3.client('ses',region_name=AWS_REGION)
-			# Try to send the email.
-			try:
-				#Provide the contents of the email.
-				response = client.send_email(
-					Destination={
-						'ToAddresses': [
-							RECIPIENT,
-						],
-					},
-					Message={
-						'Body': {
-							'Text': {
-								'Charset': CHARSET,
-								'Data': BODY_TEXT,
-							},
-						},
-						'Subject': {
+		# The character encoding for the email.
+		CHARSET = "UTF-8"
+		# Create a new SES resource and specify a region.
+		client = boto3.client('ses',region_name=AWS_REGION)
+		# Try to send the email.
+		try:
+			#Provide the contents of the email.
+			response = client.send_email(
+				Destination={
+					'ToAddresses': [
+						recipient,
+					],
+				},
+				Message={
+					'Body': {
+						'Text': {
 							'Charset': CHARSET,
-							'Data': SUBJECT,
+							'Data': BODY_TEXT,
 						},
 					},
-					Source=SENDER,
-				)
-			except ClientError as e:
-				print(e.response['Error']['Message'])
-			else:
-				print("Email sent! Message ID:"),
-				print(response['ResponseMetadata']['RequestId'])
+					'Subject': {
+						'Charset': CHARSET,
+						'Data': SUBJECT,
+					},
+				},
+				Source=SENDER,
+			)
+		except ClientError as e:
+			print(e.response['Error']['Message'])
+		else:
+			print("Email sent! Message ID:"),
+			print(response['ResponseMetadata']['RequestId'])
 
 #for testing 
 if __name__ == "__main__":

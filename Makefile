@@ -1,10 +1,9 @@
 PROJECT = ftc_scraper
-VIRTUAL_ENV = venv_temp
+VIRTUAL_ENV = venv
 FUNCTION_NAME = ftc_scraper
 AWS_REGION = us-west-2
 FUNCTION_HANDLER = lambda_handler
 LAMBDA_ROLE = arn:aws:iam::889200810732:role/service-role/basic-role
-SPREADSHEET_ID = 1HnjM8yz9WIKdO16dOOt4GlgSnfhd4PrRvOVGxYP5GmQ
 KEY_ID = arn:aws:kms:us-west-2:889200810732:key/ffed0d5a-4984-4c4a-a3f1-b2ab46e6bae7
 
 #Commands
@@ -103,7 +102,7 @@ lambda_create:
 	aws lambda update-function-configuration \
 		--function-name $(FUNCTION_NAME) \
 		--kms-key-arn $(KEY_ID) \
-		--environment Variables={SpreadsheetId=$(SPREADSHEET_ID)}  
+		#--environment Variables={SpreadsheetId=$(SPREADSHEET_ID)}  
 
 lambda_run: 
 	aws lambda invoke \
