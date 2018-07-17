@@ -21,7 +21,7 @@ class GoogleSheets():
 		"""
 		credentials = self.credentials
 		gc = gspread.authorize(credentials)
-		sheet = gc.open('Privacy Patterns Cases').worksheet("FTC")
+		sheet = gc.open('Privacy Patterns Cases').worksheet("OPC")
 		for value in values: 
 			sheet.append_row(value)
 		

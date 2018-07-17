@@ -6,6 +6,9 @@ FUNCTION_HANDLER = lambda_handler
 LAMBDA_ROLE = arn:aws:iam::889200810732:role/service-role/basic-role
 KEY_ID = arn:aws:kms:us-west-2:889200810732:key/ffed0d5a-4984-4c4a-a3f1-b2ab46e6bae7
 
+PROJECT_2 = canada_scraper
+FUNCTION_NAME_2 = canada_scraper
+
 #Commands
 build: clean_package build_package_tmp copy_python remove_unused zip 
 update: build lambda_delete lambda_create 
@@ -27,6 +30,7 @@ others_installs:
 build_package_tmp: #copy over project 
 	mkdir -p ./package/tmp/lib 
 	cp -a ./$(PROJECT)/. ./package/tmp
+	cp -a ./$(PROJECT_2)/. ./package/tmp
 
 copy_python: 
 	if test -d $(VIRTUAL_ENV)/lib; then \
@@ -73,10 +77,13 @@ remove_unused: #gets rid of python files/dirs that we don't need to thin out lam
 
 zip: 
 	cd ./package/tmp && zip -r ../$(PROJECT).zip .
+	cd ./package/tmp && zip -r ../$(PROJECT_2).zip .
 
 lambda_delete: 
 	aws lambda delete-function \
 		--function-name $(FUNCTION_NAME)
+	aws lambda delete-function \
+		--function-name $(FUNCTION_NAME_2)
 
 # Creates a customer master key (CMK) in the caller's AWS account.
 # Only called once 
@@ -102,7 +109,20 @@ lambda_create:
 	aws lambda update-function-configuration \
 		--function-name $(FUNCTION_NAME) \
 		--kms-key-arn $(KEY_ID) \
-		#--environment Variables={SpreadsheetId=$(SPREADSHEET_ID)}  
+
+	aws lambda create-function \
+		--region $(AWS_REGION) \
+		--function-name $(FUNCTION_NAME_2) \
+		--zip-file fileb://./package/$(PROJECT_2).zip \
+		--role $(LAMBDA_ROLE) \
+		--handler $(PROJECT_2).$(FUNCTION_HANDLER_2) \
+		--runtime python2.7 \
+		--timeout 300 \
+		--memory-size 128 \
+
+	aws lambda update-function-configuration \
+		--function-name $(FUNCTION_NAME_2) \
+		--kms-key-arn $(KEY_ID) \
 
 lambda_run: 
 	aws lambda invoke \

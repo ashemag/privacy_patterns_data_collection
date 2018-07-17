@@ -62,19 +62,19 @@ class Crawler:
 				dates.append(node.time.text)
 		return dates
 
-	@staticmethod
-	def _extract_accountability(soup): 
-		for header in soup.find_all('h4'):
-			if header.text == 'Accountability':
-				nextNode = header
-				while True:  
-					nextNode = nextNode.nextSibling 
-					if nextNode is None: 
-						break  
-					if nextNode.name is not None:
-						if nextNode.name == 'p': 
-							return nextNode.text   
-		return ''
+	# @staticmethod
+	# def _extract_accountability(soup): 
+	# 	for header in soup.find_all('h4'):
+	# 		if header.text == 'Accountability':
+	# 			nextNode = header
+	# 			while True:  
+	# 				nextNode = nextNode.nextSibling 
+	# 				if nextNode is None: 
+	# 					break  
+	# 				if nextNode.name is not None:
+	# 					if nextNode.name == 'p': 
+	# 						return nextNode.text   
+	# 	return ''
 		 
 	def _extract_case_data(self, case_urls, case_numbers, case_dates, data, case_principles, principle, verbose): 
 		base = 'https://www.priv.gc.ca/'
@@ -99,7 +99,7 @@ class Crawler:
 	def _write(self, data): 
 		with open(self.export_filename, 'w') as csvfile: 
 			writer = csv.writer(csvfile)
-			fieldnames = ['Case Name', 'Case URL', 'Case Number', 'Last Updated', 'Enforcement Authority', 'Location']
+			fieldnames = ['Case Name', 'Case URL', 'Case Number', 'Last Updated', 'Enforcement Authority', 'Location', 'Privacy Principle']
 			writer.writerow(fieldnames)
 			for key in data: 
 				writer.writerow(data[key])
